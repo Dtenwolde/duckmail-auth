@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckMail Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .token-box {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>DuckMail Authentication</h1>
+    <p>Below is your authentication token. Copy it and paste it into the DuckDB console to complete the authentication process.</p>
+    <div class="token-box" id="token-box">
+        <em>Loading token...</em>
+    </div>
+    <button onclick="copyToken()">Copy Token</button>
+    <script>
+        // Extract the access token from the URL fragment
+        const fragment = window.location.hash;
+        const params = new URLSearchParams(fragment.slice(1));
+        const token = params.get('access_token');
+
+        // Display the token in the token-box
+        const tokenBox = document.getElementById('token-box');
+        if (token) {
+            tokenBox.textContent = token;
+        } else {
+            tokenBox.textContent = "No token found. Please check your authentication flow.";
+        }
+
+        // Function to copy the token to clipboard
+        function copyToken() {
+            if (token) {
+                navigator.clipboard.writeText(token).then(() => {
+                    alert("Token copied to clipboard!");
+                }).catch(err => {
+                    alert("Failed to copy token: " + err);
+                });
+            } else {
+                alert("No token available to copy.");
+            }
+        }
+    </script>
+</body>
+</html>
